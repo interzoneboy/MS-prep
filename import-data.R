@@ -1,5 +1,6 @@
 library(reshape2)
 library(plyr)
+library(funprog)
 
 #
 #
@@ -37,7 +38,7 @@ read_data_file <- function(fname, body=NULL){
     return(d)
 }
 
-import_data <- function(d_in, id_cols, measure_cols,
+transpose_and_filter <- function(d_in, id_cols, measure_cols,
                                 col_filters=NULL,
                                 row_filters=NULL) {
     #names_and_mz <- d[,id_cols]
@@ -56,6 +57,9 @@ import_data <- function(d_in, id_cols, measure_cols,
     # Now filter stuff --------------------------------------
     #
     #   filtering...
+
+
+    data_cols <- Reduce(function(f, x){return(f(x))}, col_filters
 
 
 
