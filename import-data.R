@@ -2,10 +2,11 @@ library(reshape2)
 library(plyr)
 library(stringr)
 
-#
-#
-#
-
+#' P is a function that, when applied to the other functions in this module, converts them all to
+#' functions that just take in the data frame in the pipeline. This is intended for use with 
+#' magrittr %>% pipelines.
+#'
+#' @example ... %>% p(remove_cols)(c(f1, f2, f3), inds=...) %>% p(somethingElse)(5.0, "zorg") %>% ...
 p <- function(f){
     w <- function(...){
         w2 <- function(d){
@@ -16,35 +17,12 @@ p <- function(f){
     return(w)
 }
 
-import_data <- function(fname){
 
-    d <- read_data_file(fname)
-
-}
-
-
-# Assuming d_in is a data frame with column 1 as sample id, other columns as variable values.
-# names(d_in) must be ["sample_id", "varName1", "varName2", ..., "varNameN"]
-normalize <- function(d_in, body=NULL){
-
-}
-
-
-# Assuming d_in is a data frame with column 1 as sample id, other columns as variable values 
-# names(d_in) must be ["sample_id", "varName1", "varName2", ..., "varNameN"]
-find_id_cols <- function(d_in, body=NULL){
-
-}
-
-# Assuming d_in is a data frame with column 1 as sample id, other columns as variable values 
-# names(d_in) must be ["sample_id", "varName1", "varName2", ..., "varNameN"]
-find_measure_cols <- function(d_in, body=NULL){
-
-
-}
-
-# Function reads in a csv file, and prepares it so that it has a proper header line
-# (1st line), and a consistent body afterwards, with no trailing empty rows or columns.
+#' Function reads in a csv file, and prepares it so that it has a proper header line
+#' (1st line), and a consistent body afterwards, with no trailing empty rows or columns.
+#' @param fname This is the filename to read in
+#' @param body Need something other than the read.csv line described below? Pass it in here.
+#' @return a data frame, with something sensical in names(...)
 read_data_file <- function(fname, body=NULL){
 
     if (is.null(body)){
@@ -55,16 +33,55 @@ read_data_file <- function(fname, body=NULL){
     return(d)
 }
 
+
+#' Function that describes a range in a given data frame context. Intended for use within a
+#' pipeline, where there's no explicit data frame to measure, like for the inds argument of
+#' remove_cols and remove_rows. 
+#'
+#' @param type Either Is this a range of 'row' or 'col' 
+#' @param fromInd Either a numeric, or 'start' or 'end'
+#' @param toInd Either a numeric, or 'start' or 'end'
+#' @return function(d), called with a data frame, that returns a numeric vector.
+span <- function(type, fromInd, toInd){
+    inner <- function(d){
+        a <- function(x, dimMeasure){
+            if(is.numeric(x)){
+                ff <- x
+            }else if(x=="start"){
+                ff <- 1
+            }else if(x=="end"){
+                ff <- dimMeasure(d)
+            }
+            return(ff)
+        }
+        if (type=="row"){
+            ff <- a(fromInd, nrow)
+            ee <- a(toInd, nrow)
+            return(ff:ee)
+        } else if (type=="col"){
+            ff <- a(fromInd, ncol)
+            ee <- a(toInd, ncol)
+            return(ff:ee)
+        } else {
+            stop("Illegal Type")
+        }
+    }
+    return(inner)
+}
+        
+
 #' Function removes columns from input data frame d, returning a data frame without them
 #' @param d Input data frame needing columns removed
-#' @param func
-#' @param inds A vector of indexes to consider for removal. Useful for guaranteeing that id info won't be removed etc.
+#' @param funcList A list of functions that each yield column indices to be removed. Joined with union.
+#' @param inds A vector of indexes to consider for removal. Useful for guaranteeing that id info won't be removed etc. The final list of columns to remove is intersected with this list. This can also be a function that is called with the data frame d, and returns a vector of indices (such as the 'span' function above).
 #' @return The input data frame \code{d} but missing the unwanted columns
 remove_cols <- function(d, funcList, inds=NULL){
 
     #bad.cols <- grep(name_frag, names(d), ignore.case=T)
     if (is.null(inds)){
         all_inds <- 1:ncol(d)
+    }else if(is.function(inds)){
+        all_inds <- inds(d)
     }else{
         all_inds <- inds
     }
@@ -84,12 +101,14 @@ remove_cols <- function(d, funcList, inds=NULL){
 #' Function removes rows from input data frame d, returning a data frame without them
 #' @param d Input data frame needing rows removed
 #' @param func
-#' @param inds A vector of indexes to consider for removal. Useful for guaranteeing that id info won't be removed etc.
-#' @return The input data frame \code{d} but missing the unwanted columns
+#' @param inds A vector of indexes to consider for removal. Useful for guaranteeing that id info won't be removed etc. The final list of rows to remove is intersected with this list. This can also be a function that is called with the data frame d, and returns a vector of indices (such as the 'span' function above).
+#' @return The input data frame \code{d} but missing the unwanted rows
 remove_rows <- function(d, funcList, inds=NULL){
 
     if (is.null(inds)){
         all_inds <- 1:nrow(d)
+    }else if(is.function(inds)){
+        all_inds <- inds(d)
     }else{
         all_inds <- inds
     }
@@ -114,9 +133,8 @@ remove_rows <- function(d, funcList, inds=NULL){
 #' @param col_name The name of the column to use in generating the new one.
 #' @param new_col_name What are we going to name the new column.
 #' @param splitFunc Takes a single vector, returns a single vector, and contains the column creation logic.
+#' @return A copy of the input dataframe d, with the new column appended
 generate_col <- function(d, col_name, new_col_name, splitFunc){
-    print(paste("blaaaaah", dim(d)))
-    print(names(d))
     d.out <- d
     d.out[[new_col_name]] <- splitFunc(d[[col_name]])
     return(d.out)
@@ -129,12 +147,27 @@ generate_col <- function(d, col_name, new_col_name, splitFunc){
 #' @param d Input data frame needing column alteration.
 #' @param col_name The name of the column to alter.
 #' @param alterFunc Takes a single vector, returns a single vector that is an altered copy.
+#' @return A copy of the input data frame d with the given column altered.
 alter_col <- function(d, col_name, alterFunc){
     d.out <- d
     d.out[[col_name]] <- alterFunc(d.out[[col_name]])
     return(d.out)
 } 
 
+#' Function that uniformly applies the same change to many columns. Intended to do things like 
+#' converting character columns to numeric ones.
+#' @param d Input data frame needing column alteration.
+#' @param col_finder Take the whole data frame (d here) and return a vector of numeric indices of columns to alter.
+#' @param alterFunc Takes a single vector, returns a single vector that is an altered copy.
+#' @return A copy of the input data frame d with the given columns altered.
+alter_cols <- function(d, col_finder, alterFunc){
+    d.out <- d
+    col_inds <- col_finder(d.out)
+    for (ci in col_inds){
+        d.out[,ci] <- alterFunc(d.out[,ci])
+    }
+    return(d.out)
+} 
 
 
 #' Function transposes the dataframe. You tell it which columns contain row id information, and
@@ -148,7 +181,7 @@ alter_col <- function(d, col_name, alterFunc){
 #'        to be used for sample names out of it.
 #' @return transposed data frame, with the sample_ids in the first colmns (used to be original data frame names), and the frame/variable
 #'         id information in the names(...) attribute.
-transpose <- function(d, id_cols, measured_cols, id_col_name, name_cols=NULL ){
+transpose <- function(d, id_cols, id_col_name, name_cols=NULL ){
     d_trans <- data.frame(t(d), stringsAsFactors=F)
     d_trans <- data.frame(id=row.names(d_trans), d_trans, stringsAsFactors=F)
     d_nameThings <- d_trans[1:(length(id_cols)),]
@@ -163,47 +196,4 @@ transpose <- function(d, id_cols, measured_cols, id_col_name, name_cols=NULL ){
 }
 
 
-transpose_filter_normalize <- function(d_in, id_cols, measure_cols,
-                                       id_formatter=NULL,
-                                       col_filters=NULL,
-                                       row_filters=NULL,
-                                       normalizers=NULL) {
 
-    # Take only the column indexes of interest, that either id the row, or id the sample.
-    #
-    d_sieve_mz_info <- d_in[,id_cols]
-    d_pre <- d_in[,c(id_cols, measure_cols)]
-    d_trans <- data.frame(t(d_pre), stringsAsFactors=F)
-    d_trans <- data.frame(id=row.names(d_trans), d_trans, stringsAsFactors=F)
-
-    d <- d_trans[(length(id_cols)+1):nrow(d_trans),]
-    if (!is.null(id_formatter)){
-        d$id <- id_formatter(d$id)
-    }
-
-    data_cols <- data.frame(lapply(d[,2:ncol(d)], as.numeric))
-
-    # Now filter stuff --------------------------------------
-    #
-    #   Filter the data_cols, using the list of col filtering functions provided as argument.
-    if (!is.null(col_filters)){
-        data_cols <- Reduce(function(x, f){return(f(x))}, col_filters, init=data_cols)
-    }
-    d <- data.frame(id=d$id, data_cols, stringsAsFactors=F)
-    if (!is.null(row_filters)){
-        d <- Reduce(function(x,f){f(x)}, row_filters, init=d)
-    }
-
-    # Now do normalizing stuff ------------------------------
-    #
-    #   normalizing...
-    if (!is.null(normalizers)){
-        d <- Reduce(function(x,f){f(x)}, normalizers, init=d)
-    }
-
-    # Process sample ID if necessary (for matching to aux sample info)
-    #
-    ret <- data.frame(id=d$id, data_cols_out, stringsAsFactors=F)
-    return(ret)
-
-}
