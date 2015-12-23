@@ -7,6 +7,7 @@ library(stringr)
 #' Intended for use with magrittr %>% pipelines.
 #'
 #' @example ... %>% p(remove_cols)(c(f1, f2, f3), inds=...) %>% p(somethingElse)(5.0, "zorg") %>% ...
+#' @export
 p <- function(f){
     w <- function(...){
         w2 <- function(d){
@@ -23,6 +24,7 @@ p <- function(f){
 #' @param fname This is the filename to read in
 #' @param body Need something other than the read.csv line described below? Pass it in here.
 #' @return a data frame, with something sensical in names(...)
+#' @export
 read_data_file <- function(fname, body=NULL){
 
     if (is.null(body)){
@@ -42,6 +44,7 @@ read_data_file <- function(fname, body=NULL){
 #' @param fromInd Either a numeric, or 'start' or 'end'
 #' @param toInd Either a numeric, or 'start' or 'end'
 #' @return function(d), called with a data frame, that returns a numeric vector.
+#' @export
 span <- function(type, fromInd, toInd){
     inner <- function(d){
         a <- function(x, dimMeasure){
@@ -75,6 +78,7 @@ span <- function(type, fromInd, toInd){
 #' @param funcList A list of functions that each yield column indices to be removed. Joined with union.
 #' @param inds A vector of indexes to consider for removal. Useful for guaranteeing that id info won't be removed etc. The final list of columns to remove is intersected with this list. This can also be a function that is called with the data frame d, and returns a vector of indices (such as the 'span' function above).
 #' @return The input data frame \code{d} but missing the unwanted columns
+#' @export
 remove_cols <- function(d, funcList, inds=NULL){
 
     #bad.cols <- grep(name_frag, names(d), ignore.case=T)
@@ -103,6 +107,7 @@ remove_cols <- function(d, funcList, inds=NULL){
 #' @param func
 #' @param inds A vector of indexes to consider for removal. Useful for guaranteeing that id info won't be removed etc. The final list of rows to remove is intersected with this list. This can also be a function that is called with the data frame d, and returns a vector of indices (such as the 'span' function above).
 #' @return The input data frame \code{d} but missing the unwanted rows
+#' @export
 remove_rows <- function(d, funcList, inds=NULL){
 
     if (is.null(inds)){
@@ -134,6 +139,7 @@ remove_rows <- function(d, funcList, inds=NULL){
 #' @param new_col_name What are we going to name the new column.
 #' @param splitFunc Takes a single vector, returns a single vector, and contains the column creation logic.
 #' @return A copy of the input dataframe d, with the new column appended
+#' @export
 generate_col <- function(d, col_name, new_col_name, splitFunc){
     d.out <- d
     d.out[[new_col_name]] <- splitFunc(d[[col_name]])
@@ -148,6 +154,7 @@ generate_col <- function(d, col_name, new_col_name, splitFunc){
 #' @param col_name The name of the column to alter.
 #' @param alterFunc Takes a single vector, returns a single vector that is an altered copy.
 #' @return A copy of the input data frame d with the given column altered.
+#' @export
 alter_col <- function(d, col_name, alterFunc){
     d.out <- d
     d.out[[col_name]] <- alterFunc(d.out[[col_name]])
@@ -160,6 +167,7 @@ alter_col <- function(d, col_name, alterFunc){
 #' @param col_finder Take the whole data frame (d here) and return a vector of numeric indices of columns to alter.
 #' @param alterFunc Takes a single vector, returns a single vector that is an altered copy.
 #' @return A copy of the input data frame d with the given columns altered.
+#' @export
 alter_cols <- function(d, col_finder, alterFunc){
     d.out <- d
     col_inds <- col_finder(d.out)
@@ -181,6 +189,7 @@ alter_cols <- function(d, col_finder, alterFunc){
 #'        to be used for sample names out of it.
 #' @return transposed data frame, with the sample_ids in the first colmns (used to be original data frame names), and the frame/variable
 #'         id information in the names(...) attribute.
+#' @export
 transpose <- function(d, id_cols, id_col_name, name_cols=NULL ){
     d_trans <- data.frame(t(d), stringsAsFactors=F)
     d_trans <- data.frame(id=row.names(d_trans), d_trans, stringsAsFactors=F)
