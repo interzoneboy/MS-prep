@@ -12,3 +12,4 @@ Description: This module implements basic parsing of sieve MS and MS/MS data,
 Maintainer: matt s <mattt@gmail.com>
 License: GPL (>= 2)
 RoxygenNote: 5.0.1.9000
+Imports: stringr
