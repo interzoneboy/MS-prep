@@ -197,7 +197,7 @@ transpose <- function(d, id_cols, id_col_name, name_cols=NULL ){
     if (!is.null(name_cols)){
         names(d_out) <- name_cols(d_nameThings)
     }else{
-        names(d_out) <- c(id_col_name, paste0("frame_", str_trim(d_nameThings[1,2:length(d_nameThings)])))
+        names(d_out) <- c(id_col_name, paste0("frame_", stringr::str_trim(d_nameThings[1,2:length(d_nameThings)])))
     }
     row.names(d_out) <- NULL
     return(d_out)
