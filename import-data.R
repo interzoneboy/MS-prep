@@ -2,9 +2,9 @@ library(reshape2)
 library(plyr)
 library(stringr)
 
-#' P is a function that, when applied to the other functions in this module, converts them all to
-#' functions that just take in the data frame in the pipeline. This is intended for use with 
-#' magrittr %>% pipelines.
+#' P is the pipelining function of this module. It decorates functions such that their only argument
+#' becomes the data frame in the pipeline.
+#' Intended for use with magrittr %>% pipelines.
 #'
 #' @example ... %>% p(remove_cols)(c(f1, f2, f3), inds=...) %>% p(somethingElse)(5.0, "zorg") %>% ...
 p <- function(f){
