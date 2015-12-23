@@ -1,9 +1,7 @@
-
-
-Package: MS-prep
+Package: MSprep
 Version: 0.0.1
 Date: 2015-12-23
-Title: MS-prep
+Title: MSprep does basic parsing of sieve data
 Authors@R: c(person("matt", "s", role=c("aut","cre"),
 		     email = "mattthew@gmail.com"))
 Description: This module implements basic parsing of sieve MS and MS/MS data, into a logically constructed R data frame, suitable for further processing. Also a case study of how to explicitly pipeline analysis and data processing, using functions, decorators, and magrittr n'est pas une pipelines.
