@@ -2,25 +2,44 @@ library(reshape2)
 library(plyr)
 library(ggplot2)
 
+#' @export
 mass.error <- 0.005
+
+#' @export
 max.rt.drift_in <- 0.05
 
+#' @export
 m1 <- list(min=(1.0034 - mass.error), max=(1.0034 + mass.error))
+
+#' @export
 m2 <- list(min=(2.0043 - mass.error), max=(2.0043 + mass.error))
+
+#' @export
 m3 <- list(min=(3.0077 - mass.error), max=(3.0077 + mass.error))
 
+
+#' @export
 frag1 <- list(min=(60.0212 - mass.error), max=(60.0212 + mass.error))
 
+#' @export
 to.elim.2 <- list(m1=list(m1,"+"), 
                 m2=list(m2,"+"), 
                 m3=list(m3,"+")) 
 
+#' @export
 to.elim.1 <- list(frag1=list(frag1, "-"))
 
+#' @export
 testCount1 <- 0
+
+#' @export
 testCount2 <- 0
 
-filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim.2, max.rt.drift=max.rt.drift_in){
+countEnv <- new.env()
+assign("testCount1", 0, envir=countEnv)
+assign("testCount2", 0, envir=countEnv)
+
+filter <- function(peakFrameIn, mzColName, timeColName, massShiftList1=to.elim.1, massShiftList2=to.elim.2, max.rt.drift=max.rt.drift_in){
 
     # peakFrameIn: this is the peak information (like mass and RT). Peaks are in the rows. Must have at least two
     #       columns I guess -- one named "mz" and one named "rt". Both must be numeric.
@@ -39,8 +58,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
     for(i in 1:(dim(peakFrameIn)[[1]]-1)) {
 
         peak1 <- peakFrameIn[i,]
-        peak1.mz <- peak1$mz
-        peak1.rt <- peak1$rt
+        peak1.mz <- peak1[[mzColName]]
+        peak1.rt <- peak1[[timeColName]]
 
         #print(paste("Working on peak",i,". Counts are",testCount1,"and",testCount2))
         print(paste0("Working on peak ",i,". Num discarded: ", testCount1, " -- ", testCount2 ))
@@ -53,11 +72,11 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                     # +++
                     # stuff
                     peak2 <- peakFrameIn[j,]
-                    peak2.mz <- peak2$mz
-                    peak2.rt <- peak2$rt
+                    peak2.mz <- peak2[[mzColName]]
+                    peak2.rt <- peak2[[timeColName]]
 
 
-                    if(abs(peak1$rt - peak2$rt) <= max.rt.drift) {
+                    if(abs(peak1[[timeColName]] - peak2[[timeColName]]) <= max.rt.drift) {
 
                         # This peak is a candidate for removal based on RT.
                         # Now check its mass differences.
@@ -70,7 +89,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                             if(massShiftList1[[elim]][[2]] == "+"){
                                 # Peak is mass shifted higher
                                 if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
-                                    testCount1 <<- testCount1 + 1
+                                    #testCount1 <<- testCount1 + 1
+                                    assign("testCount1", (testCount1+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "higher"
                                     ref.parent[[j]] <- as.character(i)
@@ -81,7 +101,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                             if(massShiftList1[[elim]][[2]] == "-"){
                                 # Peak is mass shifted lower
                                 if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
-                                    testCount1 <<- testCount1 + 1
+                                    #testCount1 <<- testCount1 + 1
+                                    assign("testCount1", (testCount1+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "lower"
                                     ref.parent[[j]] <- as.character(i)
@@ -98,7 +119,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                             if(massShiftList2[[elim]][[2]] == "+"){
                                 # Peak is mass shifted higher
                                 if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
-                                    testCount1 <<- testCount1 + 1
+                                    #testCount1 <<- testCount1 + 1
+                                    assign("testCount1", (testCount1+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "higher"
                                     ref.parent[[j]] <- as.character(i)
@@ -109,7 +131,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                             if(massShiftList2[[elim]][[2]] == "-"){
                                 # Peak is mass shifted lower
                                 if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
-                                    testCount1 <<- testCount1 + 1
+                                    #testCount1 <<- testCount1 + 1
+                                    assign("testCount1", (testCount1+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "lower"
                                     ref.parent[[j]] <- as.character(i)
@@ -128,11 +151,11 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                     # +++
                     # stuff
                     peak2 <- peakFrameIn[j,]
-                    peak2.mz <- peak2$mz
-                    peak2.rt <- peak2$rt
+                    peak2.mz <- peak2[[mzColName]]
+                    peak2.rt <- peak2[[timeColName]]
 
 
-                    if(abs(peak1$rt - peak2$rt) <= max.rt.drift) {
+                    if(abs(peak1[[timeColName]] - peak2[[timeColName]]) <= max.rt.drift) {
 
                         # This peak is a candidate for removal based on RT.
                         # Now check its mass differences.
@@ -145,7 +168,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                             if(massShiftList2[[elim]][[2]] == "+"){
                                 # Peak is mass shifted higher
                                 if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
-                                    testCount1 <<- testCount1 + 1
+                                    #testCount1 <<- testCount1 + 1
+                                    assign("testCount1", (testCount1+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "higher"
                                     ref.parent[[j]] <- as.character(i)
@@ -156,7 +180,8 @@ filter <- function(peakFrameIn, massShiftList1=to.elim.1, massShiftList2=to.elim
                             if(massShiftList2[[elim]][[2]] == "-"){
                                 # Peak is mass shifted lower
                                 if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
-                                    testCount1 <<- testCount1 + 1
+                                    #testCount1 <<- testCount1 + 1
+                                    assign("testCount1", (testCount1+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "lower"
                                     ref.parent[[j]] <- as.character(i)

@@ -16,6 +16,8 @@ vasant_filter <- function(d, corr_cutoff=0.8, inds=NULL){
 
 #' massShift_filter removes peaks that correspond to specific mass shifts.
 #'
+#' @param mzColName This is the name of the MZ column in the sieve data to be filtered.
+#' @param timeColName This is the retention time column name in the sieve data to be filtered.
 #' @param shiftList1 Primary list of mass shifts. These should correspond to things like adducts and fragments
 #'      that additionally have other shifts (like isotopes), provided in shiftList2, calculated.
 #' @param shiftList2 Secondary list of mass shifts. This should correspond to things like isotopes, that need to be
@@ -25,8 +27,8 @@ vasant_filter <- function(d, corr_cutoff=0.8, inds=NULL){
 #' @param mass_acc The mass accuracy of the instrument, when we're within the rt window, looking for the mass of a fragment peak,
 #'      we consider everything within a +/- mass_acc window from the target value.
 #' @export
-massShift_filter <- function(d, shiftList1=to.elim.1, shiftList2=to.elim.2, rt_window_width=0.05){
+massShift_filter <- function(d, mzColName="MZ", timeColName="Time", shiftList1=to.elim.1, shiftList2=to.elim.2, rt_window_width=0.05){
 
     # Call Rose's filter and return.
-    filter(d, shiftList1, shiftList2, rt_window_width)
+    filter(d, mzColName, timeColName, shiftList1, shiftList2, rt_window_width)
 }
