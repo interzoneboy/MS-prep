@@ -4,8 +4,8 @@
 \alias{massShift_filter}
 \title{massShift_filter removes peaks that correspond to specific mass shifts.}
 \usage{
-massShift_filter(d, shiftList1, shiftList2, rt_window_width = 0.05,
-  mass_acc = 0.005)
+massShift_filter(d, shiftList1 = to.elim.1, shiftList2 = to.elim.2,
+  rt_window_width = 0.05)
 }
 \arguments{
 \item{shiftList1}{Primary list of mass shifts. These should correspond to things like adducts and fragments
