@@ -1,6 +1,6 @@
 library(magrittr)
 source("R/remCorlowIntensity.R")
-source("R/whateverRosesFilterModuleIsCalled.R")
+source("R/filter_corrected.R")
 
 #' vasant_filter runs Vasant's vectorized correlation filter on data frame d.
 #'
@@ -25,7 +25,8 @@ vasant_filter <- function(d, corr_cutoff=0.8, inds=NULL){
 #' @param mass_acc The mass accuracy of the instrument, when we're within the rt window, looking for the mass of a fragment peak,
 #'      we consider everything within a +/- mass_acc window from the target value.
 #' @export
-massShift_filter <- function(d, shiftList1, shiftList2, rt_window_width=0.05, mass_acc=0.005){
+massShift_filter <- function(d, shiftList1=to.elim.1, shiftList2=to.elim.2, rt_window_width=0.05){
 
     # Call Rose's filter and return.
+    filter(d, shiftList1, shiftList2, rt_window_width)
 }
