@@ -129,6 +129,30 @@ remove_rows <- function(d, funcList, inds=NULL){
 
 }
 
+#' keep_rows
+#'
+#' Function keeps only the specified rows from input data frame d, returning a new
+#' data frame containing only these rows.
+#'
+#' @param d Input data frame
+#' @param funcList a list of functions. Each takes a whole dataframe, and returns a vector of indices detailing which rows to keep.
+#' @return The input data frame \code{d} but containing only the rows we want to keep
+#' @export
+keep_rows <- function(d, funcList){
+ 
+    ret_inds <- Reduce(function(x,y){
+                         newInds <- y(d)
+                         return(union(newInds, x))
+    }, funcList, init=c())
+    if (length(ret_inds) > 0){
+        d.out <- d[ret_inds,]
+    }else{
+        stop("Not keeping any rows at all?")
+    }
+    return(d.out)
+
+}
+
 #' Function that somehow generates a new column called "new_col_name" from the old column, called
 #' "col_name". splitFunc is a function that accepts a vector, and returns a new vector. This function
 #' is intended to do things like split sample names from the default values that are multipart and
