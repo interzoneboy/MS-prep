@@ -1,3 +1,14 @@
+
+#' remCor.lowintensity
+#'
+#' Filter the columns of data frame d such that the less median-intense (or other user
+#' specifiable column, correlated at a value higher than cutoff, is removed.
+#'
+#' @param d Input data frame
+#' @param cutoff Correlation threshold at which to do removal
+#' @param measure Column measure used to determine column to remove
+#' @return a vector of column indices to keep.
+#' @export
 remCor.lowintensity <- function(d, cutoff=0.8, measure=median) {
 	#This function returns indices of columns that should be retained, after dropping correlated columns (that have lower intensity).
 	#After getting list of indices that are correlated, 

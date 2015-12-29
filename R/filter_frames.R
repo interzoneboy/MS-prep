@@ -9,9 +9,26 @@ source("R/filter_corrected.R")
 #' @param inds Vector of inds over which to operate
 #' @return Copy of data frame d, but missing the columns (optionally specified by inds) that don't make the cutoff
 #' @export
-vasant_filter <- function(d, corr_cutoff=0.8, inds=NULL){
-
-    # Call Vasant's thing and return.
+vasant_filter <- function(d, corr_cutoff=0.8, measure=median, inds=NULL){
+    
+    all_inds <- 1:ncol(d)
+    if (is.null(inds)){
+        compute_inds <- 1:ncol(d)
+    }else if (is.function(inds)){
+        compute_inds <- inds(d)
+    }else{
+        compute_inds <- inds
+    }
+    saved_inds <- setdiff(all_inds, compute_inds)
+    d_call <- d[,compute_inds] 
+    # Call Vasant's thing.
+    v_inds <- remCor.lowintensity(d_call, corr_cutoff, measure)
+    inds_keep <- compute_inds[v_inds]
+    inds_out <- c(saved_inds, inds_keep)
+    oo <- order(inds_out)
+    inds_out_2 <- inds_out[oo]
+    d_out <- d[,inds_out_2]
+    return(d_out)
 }
 
 #' massShift_filter removes peaks that correspond to specific mass shifts.

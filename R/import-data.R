@@ -2,6 +2,20 @@ library(reshape2)
 library(plyr)
 library(stringr)
 
+#' print_dim
+#'
+#' print_dim simply prints the dim of input matrix d using "print"
+#' @param d The input data frame for dim printing.
+#' @param tagStr A string to provide some context
+#' @return Prints to the screen... returns the data frame d for further pipelining.
+#' @export
+print_dim <- function(d, tagStr){
+    print(paste0(tagStr," -- ", paste(dim(d), collapse=",")))
+    return(d)
+
+}
+
+
 #' P is the pipelining function of this module. It decorates functions such that their only argument
 #' becomes the data frame in the pipeline.
 #' Intended for use with magrittr %>% pipelines.

@@ -4,7 +4,7 @@
 \alias{vasant_filter}
 \title{vasant_filter runs Vasant's vectorized correlation filter on data frame d.}
 \usage{
-vasant_filter(d, corr_cutoff = 0.8, inds = NULL)
+vasant_filter(d, corr_cutoff = 0.8, measure = median, inds = NULL)
 }
 \arguments{
 \item{d}{data frame (already transposed) to filter.}
