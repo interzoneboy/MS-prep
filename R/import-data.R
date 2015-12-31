@@ -102,9 +102,14 @@ remove_cols <- function(d, funcList, inds=NULL){
     }else{
         all_inds <- inds
     }
+
+    not.considered.inds <- setdiff((1:ncol(d)), all_inds)
+
     ret_inds <- intersect(all_inds, Reduce(function(x,y){
-        newInds <- y(d)
-        return(union(newInds, x))
+        newInds <- y(d[all_inds])
+        kept.inds <- all_inds[newInds]
+        kept.inds <- union(not.considered.inds, kept.inds)
+        return(union(kept.inds, x))
     }, funcList, init=c()))
     if (length(ret_inds) > 0){
         d.out <- d[,-ret_inds]
