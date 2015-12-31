@@ -11,6 +11,8 @@ library(magrittr)
 #'    just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
 #'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
 #'      and which returns a vector of ints (see function 'span' in this package)
+#' @return returns the input data frame, but with the data cols normalized.
+#' @export
 norm_to_frame <- function(dd, normCol, inds=NULL){
 
     norm_stat <- unlist(dd[,normCol])
@@ -39,6 +41,8 @@ norm_to_frame <- function(dd, normCol, inds=NULL){
 #'      they are used to normalize.    
 #' @param inds A span of indices over which to operate. These should be the data columns, and this is
 #'    just so that you can have other ignored columns be in there. 
+#' @return returns the input data frame, but with the data cols normalized.
+#' @export
 norm_to_median <- function(dd, normCols, inds=NULL){
 
     norm_stat_pre <- dd[,normCols]
@@ -59,4 +63,17 @@ norm_to_median <- function(dd, normCols, inds=NULL){
     dd_out <- dd
     dd_out[,all_inds] <- normed_mat
     return(dd_out)
+}
+
+#' norm_null
+#'
+#' norm_null doesn't do any normalizing, but represents. Use this if you need a default normalizing arg
+#' that does nothing.
+#' @param dd input data frame
+#' @param normCols dummy variable for column to normalize with. This whole function does nothing.
+#' @param inds dummy variable
+#' @return returns the input data frame, exactly the way it was.
+#' @export
+norm_null <- function(dd, normCols, inds=NULL){
+    return(dd)
 }

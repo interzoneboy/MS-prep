@@ -16,6 +16,9 @@ just so that you can have other ignored columns be in there. This can be NULL, i
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 }
+\value{
+returns the input data frame, but with the data cols normalized.
+}
 \description{
 Set this to the first frame to normalize by the most intense frame, or set this to
 the internal standard frame.

@@ -15,6 +15,9 @@ they are used to normalize.}
 \item{inds}{A span of indices over which to operate. These should be the data columns, and this is
 just so that you can have other ignored columns be in there.}
 }
+\value{
+returns the input data frame, but with the data cols normalized.
+}
 \description{
 norm_to_median normalizes all the frame-columns by the median of a number of them..
 }
