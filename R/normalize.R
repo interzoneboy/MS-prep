@@ -28,7 +28,7 @@ norm_to_frame <- function(dd, normCol, inds=NULL){
         data_mat <- dd[,all_inds]
     }
 
-    normed_mat <- sweep(data_mat, 2, norm_stat, FUN="/")
+    normed_mat <- sweep(data_mat, 1, norm_stat, FUN="/")
     dd_out <- dd
     dd_out[,all_inds] <- normed_mat
     return(dd_out)
@@ -59,7 +59,7 @@ norm_to_median <- function(dd, normCols, inds=NULL){
         data_mat <- dd[,all_inds]
     }
 
-    normed_mat <- sweep(data_mat, 2, norm_stat, FUN="/")
+    normed_mat <- sweep(data_mat, 1, norm_stat, FUN="/")
     dd_out <- dd
     dd_out[,all_inds] <- normed_mat
     return(dd_out)
