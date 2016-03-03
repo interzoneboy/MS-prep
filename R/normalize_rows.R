@@ -109,7 +109,7 @@ row_norm_to_median <- function(dd, normRows, rowInds=NULL, colInds=NULL){
 #' row_norm_to_sum normalizes all the frame-columns by the sum of a number of them..
 #'
 #' @param dd input data frame to normalize
-#' @param normRows A vector of indices that pick rows. Medians are calculated from these in column-wise manner, and
+#' @param normRows A vector of indices that pick rows. Sums are calculated from these in column-wise manner, and
 #'      they are used to normalize. May be a function like 'span' 
 #' @param rowInds A span of row indices over which to operate. These should be the data rows, and this is
 #'    just so that you can have other ignored rows be in there. May be a function like 'span'.

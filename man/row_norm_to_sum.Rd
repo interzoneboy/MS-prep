@@ -9,7 +9,7 @@ row_norm_to_sum(dd, normRows, rowInds = NULL, colInds = NULL)
 \arguments{
 \item{dd}{input data frame to normalize}
 
-\item{normRows}{A vector of indices that pick rows. Medians are calculated from these in column-wise manner, and
+\item{normRows}{A vector of indices that pick rows. Sums are calculated from these in column-wise manner, and
 they are used to normalize. May be a function like 'span'}
 
 \item{rowInds}{A span of row indices over which to operate. These should be the data rows, and this is

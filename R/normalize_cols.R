@@ -7,7 +7,11 @@ library(magrittr)
 #'
 #' @param dd input data frame to normalize
 #' @param normCol either a string column name, or a numeric column index
-#' @param inds A span of indices over which to operate. These should be the data columns, and this is
+#' @param rowInds A span of row indices over which to operate. These should be the data rows, and this is
+#'    just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
+#' @param colInds A span of column indices over which to operate. These should be the data columns, and this is
 #'    just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
 #'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
 #'      and which returns a vector of ints (see function 'span' in this package)
@@ -53,8 +57,14 @@ col_norm_to_frame <- function(dd, normCol, rowInds=NULL, colInds=NULL){
 #' @param dd input data frame to normalize
 #' @param normCols A vector of indices that pick columns. Medians are calculated from these in row-wise manner, and
 #'      they are used to normalize. May be a function like 'span' 
-#' @param inds A span of indices over which to operate. These should be the data columns, and this is
-#'    just so that you can have other ignored columns be in there. May be a function like 'span'.
+#' @param rowInds A span of row indices over which to operate. These should be the data rows, and this is
+#'    just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
+#' @param colInds A span of column indices over which to operate. These should be the data columns, and this is
+#'    just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
 #' @return returns the input data frame, but with the data cols normalized.
 #' @export
 col_norm_to_median <- function(dd, normCols, rowInds=NULL, colInds=NULL){
@@ -106,8 +116,14 @@ col_norm_to_median <- function(dd, normCols, rowInds=NULL, colInds=NULL){
 #' @param dd input data frame to normalize
 #' @param normCols A vector of indices that pick columns. Sums (for normalization) are calculated from these in row-wise manner, and
 #'    they are used to normalize. May be a function like 'span'.
-#' @param inds A span of indices over which to operate. Only these columns will have their entries normalized. Useful for ignoring
-#'    id columns etc. May be a function like 'span'.
+#' @param rowInds A span of row indices over which to operate. These should be the data rows, and this is
+#'    just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
+#' @param colInds A span of column indices over which to operate. These should be the data columns, and this is
+#'    just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
 #' @return returns the input data frame, but with the data cols normalized.
 #' @export
 col_norm_to_sum <- function(dd, normCols, rowInds=NULL, colInds=NULL){
