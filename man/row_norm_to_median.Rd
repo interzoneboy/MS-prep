@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize_rows.R
 \name{row_norm_to_median}
 \alias{row_norm_to_median}
-\title{row_norm_to_median normalizes all the frame-columns by the median of a number of them..}
+\title{row_norm_to_median normalizes all the frame-rows by the median of a number of them..}
 \usage{
 row_norm_to_median(dd, normRows, rowInds = NULL, colInds = NULL)
 }
@@ -22,6 +22,6 @@ just so that you can have other ignored columns be in there. May be a function l
 returns the input data frame, but with the specified data normalized.
 }
 \description{
-row_norm_to_median normalizes all the frame-columns by the median of a number of them..
+row_norm_to_median normalizes all the frame-rows by the median of a number of them..
 }
 

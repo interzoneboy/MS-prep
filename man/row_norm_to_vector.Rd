@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize_rows.R
 \name{row_norm_to_vector}
 \alias{row_norm_to_vector}
-\title{row_norm_to_vector normalizes all the frame-columns by one of them.}
+\title{row_norm_to_vector normalizes all the frame-rows by a supplied vector, same length as rows.}
 \usage{
 row_norm_to_vector(dd, normVector, rowInds = NULL, colInds = NULL)
 }
@@ -11,7 +11,7 @@ row_norm_to_vector(dd, normVector, rowInds = NULL, colInds = NULL)
 
 \item{normVector}{This is a vector that will properly normalize the rows of this data frame, BEFORE
 any non-processed columns are removed from it. (i.e. it has to have exactly the same dimension as
-the pre-processed data fram it's going to normalize.}
+the pre-processed data frame it's going to normalize.)}
 
 \item{rowInds}{A span of rows over which to operate. These should be the data rows, and this is
 just so that you can have other ignored rows be in there. This can be NULL, in which case all rows

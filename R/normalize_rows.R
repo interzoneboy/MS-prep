@@ -1,6 +1,6 @@
 library(magrittr)
 
-#' row_norm_to_vector normalizes all the frame-columns by one of them.
+#' row_norm_to_vector normalizes all the frame-rows by a supplied vector, same length as rows.
 #'
 #' Pre-compute some other vector by which to normalize (like from a different by identically-dimensioned
 #' matrix), and use it to normalize the rows of the input matrix.
@@ -8,7 +8,7 @@ library(magrittr)
 #' @param dd input data frame to normalize
 #' @param normVector This is a vector that will properly normalize the rows of this data frame, BEFORE
 #'        any non-processed columns are removed from it. (i.e. it has to have exactly the same dimension as
-#'        the pre-processed data fram it's going to normalize.
+#'        the pre-processed data frame it's going to normalize.)
 #' @param rowInds A span of rows over which to operate. These should be the data rows, and this is
 #'    just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
 #'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
@@ -58,7 +58,7 @@ row_norm_to_vector <- function(dd, normVector, rowInds=NULL, colInds=NULL){
 
 
 
-#' row_norm_to_frame normalizes all the frame-columns by one of them.
+#' row_norm_to_frame normalizes all the frame-rows by one of them.
 #'
 #' Set this to the first frame to normalize by the most intense frame, or set this to
 #' the internal standard frame.
@@ -111,7 +111,7 @@ row_norm_to_frame <- function(dd, normRow, rowInds=NULL, colInds=NULL){
     return(dd_out)
 }
 
-#' row_norm_to_median normalizes all the frame-columns by the median of a number of them..
+#' row_norm_to_median normalizes all the frame-rows by the median of a number of them..
 #'
 #' @param dd input data frame to normalize
 #' @param normRows A vector of indices that pick rows. Medians are calculated from these in column-wise manner, and
@@ -164,7 +164,7 @@ row_norm_to_median <- function(dd, normRows, rowInds=NULL, colInds=NULL){
     return(dd_out)
 }
 
-#' row_norm_to_sum normalizes all the frame-columns by the sum of a number of them..
+#' row_norm_to_sum normalizes all the frame-rows by the sum of a number of them..
 #'
 #' @param dd input data frame to normalize
 #' @param normRows A vector of indices that pick rows. Sums are calculated from these in column-wise manner, and

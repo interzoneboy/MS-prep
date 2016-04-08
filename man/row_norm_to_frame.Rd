@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize_rows.R
 \name{row_norm_to_frame}
 \alias{row_norm_to_frame}
-\title{row_norm_to_frame normalizes all the frame-columns by one of them.}
+\title{row_norm_to_frame normalizes all the frame-rows by one of them.}
 \usage{
 row_norm_to_frame(dd, normRow, rowInds = NULL, colInds = NULL)
 }

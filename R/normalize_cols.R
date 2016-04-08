@@ -1,5 +1,55 @@
 library(magrittr)
 
+#' col_norm_to_vector normalized all the frame-columns by a supplied vector, same length as columns.
+#
+#' Pre-compute some other vector by which to normalize (like from a different but identically dimensioned matrix),
+#' and use it to normalize the columns  of the input matrix dd.
+#' @param dd input data frame to normalize
+#' @param normVector This is a vector that will properly normalize the columns of this data frame, BEFORE
+#'        any non-processed rows are removed from it. (i.e. it has to have exactly the same dimension as
+#'        the pre-processed data frame it's going to normalize.)
+#' @param rowInds A span of row indices over which to operate. These should be the data rows, and this is
+#'    just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
+#' @param colInds A span of column indices over which to operate. These should be the data columns, and this is
+#'    just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
+#'      are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
+#'      and which returns a vector of ints (see function 'span' in this package)
+#' @return return the input data frame, but with the specified data columns normalized by the input column vector.
+#' @export
+col_norm_to_vector <- function(dd, normVector, rowInds=NULL, colInds=NULL){
+
+    norm_stat <- unlist(normVector)
+
+    if(is.null(colInds)){
+        all_col_inds <- 1:ncol(dd)
+    }else if(is.function(colInds)){
+        all_col_inds <- colInds(dd)
+    }else{
+        all_col_inds <- colInds
+    }
+    data_mat <- dd[,all_col_inds]
+
+    if(is.null(rowInds)){
+        all_row_inds <- 1:nrow(dd)
+    }else if(is.function(rowInds)){
+        all_row_inds <- rowInds(dd)
+    }else{
+        all_row_inds <- rowInds
+    }
+
+    data_mat_2 <- data_mat[all_row_inds,]
+    norm_stat_2 <- norm_stat[all_row_inds]
+
+
+    normed_mat <- sweep(data_mat_2, 1, norm_stat_2, FUN="/")
+    dd_out <- dd
+    dd_out[all_row_inds, all_col_inds] <- normed_mat
+    return(dd_out)
+}
+
+
 #' col_norm_to_frame normalizes all the frame-columns by one of them.
 #'
 #' Set this to the first frame to normalize by the most intense frame, or set this to
