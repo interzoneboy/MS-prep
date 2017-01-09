@@ -9,17 +9,17 @@ mass.error <- 0.005
 max.rt.drift_in <- 0.05
 
 #' @export
-m1 <- list(min=(1.0034 - mass.error), max=(1.0034 + mass.error))
+m1 <- list(min=(1.0034 - mass.error), max=(1.0034 + mass.error), type="m1")
 
 #' @export
-m2 <- list(min=(2.0043 - mass.error), max=(2.0043 + mass.error))
+m2 <- list(min=(2.0043 - mass.error), max=(2.0043 + mass.error), type="m2")
 
 #' @export
-m3 <- list(min=(3.0077 - mass.error), max=(3.0077 + mass.error))
+m3 <- list(min=(3.0077 - mass.error), max=(3.0077 + mass.error), type="m3")
 
 
 #' @export
-frag1 <- list(min=(60.0212 - mass.error), max=(60.0212 + mass.error))
+frag1 <- list(min=(60.0212 - mass.error), max=(60.0212 + mass.error), type="frag1")
 
 #' @export
 to.elim.2 <- list(m1=list(m1,"+"), 
@@ -33,7 +33,7 @@ countEnv <- new.env()
 assign("testCount1", 0, envir=countEnv)
 assign("testCount2", 0, envir=countEnv)
 
-filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.elim.1, massShiftList2=to.elim.2, max.rt.drift=max.rt.drift_in){
+filter <- function(peakFrameIn_in, mzColName, timeColName, idColName, massShiftList1=to.elim.1, massShiftList2=to.elim.2, max.rt.drift=max.rt.drift_in){
 
     # Sort the frames by retention time
     peakFrameIn <- peakFrameIn_in[order(peakFrameIn_in[[timeColName]]),]
@@ -52,6 +52,7 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
         peak1 <- peakFrameIn[i,]
         peak1.mz <- peak1[[mzColName]]
         peak1.rt <- peak1[[timeColName]]
+        peak1.id <- peak1[[idColName]]
 
         print(paste0("Working on mz ",peak1.mz," time ", peak1.rt, " frame ", i, ". Num discarded: ", get("testCount1",envir=countEnv)))
         
@@ -60,10 +61,10 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
             # Then grab an RT-error sized window centred on it...
             topInd <- i
             bottomInd <- i
-            while( (topInd > 1)  && (abs(peakFrameIn[topInd, timeColName] - peakFrameIn[i, timeColName]) <= max.rt.drift)) {
+            while( (topInd > 1)  && (abs(peakFrameIn[(topInd-1), timeColName] - peakFrameIn[i, timeColName]) <= max.rt.drift)) {
                 topInd <- topInd - 1
             }
-            while( (bottomInd < dim(peakFrameIn)[[1]]) && (abs(peakFrameIn[bottomInd, timeColName] - peakFrameIn[i, timeColName]) <= max.rt.drift)) {
+            while( (bottomInd < dim(peakFrameIn)[[1]]) && (abs(peakFrameIn[(bottomInd+1), timeColName] - peakFrameIn[i, timeColName]) <= max.rt.drift)) {
                 bottomInd <- bottomInd + 1
             }
 
@@ -74,6 +75,7 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
                     peak2 <- peakFrameIn[j,]
                     peak2.mz <- peak2[[mzColName]]
                     peak2.rt <- peak2[[timeColName]]
+                    peak2.id <- peak2[[idColName]]
 
                     # Only do this loop if the peak hasn't been marked as a fragment.
                     if(!(ref.type[[i]] %in% names(to.elim.1))){
@@ -87,7 +89,7 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
                                     assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "higher"
-                                    ref.parent[[j]] <- as.character(i)
+                                    ref.parent[[j]] <- peak1.id
                                 }
                             }
 
@@ -97,7 +99,7 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
                                     assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
                                     ref.type[[j]] <- elim
                                     ref.dir[[j]] <- "lower"
-                                    ref.parent[[j]] <- as.character(i)
+                                    ref.parent[[j]] <- peak1.id
                                 }
                             }
                         }
@@ -113,7 +115,7 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
                                 assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
                                 ref.type[[j]] <- elim
                                 ref.dir[[j]] <- "higher"
-                                ref.parent[[j]] <- as.character(i)
+                                ref.parent[[j]] <- peak1.id
                             }
                         }
                         if(massShiftList2[[elim]][[2]] == "-"){
@@ -122,7 +124,7 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, massShiftList1=to.eli
                                 assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
                                 ref.type[[j]] <- elim
                                 ref.dir[[j]] <- "lower"
-                                ref.parent[[j]] <- as.character(i)
+                                ref.parent[[j]] <- peak1.id
                             }
                         }
                     }
@@ -148,7 +150,7 @@ test_negMode <- function(){
     d2$rt <- as.numeric(d2$rt)
     print("Starting filtering...")
     t1 <- Sys.time()
-    ret <- filter(d2, "mz", "rt")
+    ret <- filter(d2, "mz", "rt", "id")
     t2 <- Sys.time()
     print("Finished filtering.")
     return(list(t1=t1, t2=t2, ret=ret))
