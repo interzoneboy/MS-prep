@@ -85,21 +85,25 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, idColName, massShiftL
                             dm.high <- massShiftList1[[elim]][[1]][["max"]]
 
                             if(massShiftList1[[elim]][[2]] == "+"){
-                                if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
-                                    assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
-                                    ref.type[[j]] <- elim
-                                    ref.dir[[j]] <- "higher"
-                                    ref.parent[[j]] <- peak1.id
+                                if((massShiftList1[[elim]][[1]]$type=="frag1") || (peak1.id < peak2.id)){
+                                    if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
+                                        assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
+                                        ref.type[[j]] <- elim
+                                        ref.dir[[j]] <- "higher"
+                                        ref.parent[[j]] <- peak1.id
+                                    }
                                 }
                             }
 
                             if(massShiftList1[[elim]][[2]] == "-"){
                                 wtf1 <<- list(p1=peak1, p2=peak2, lo=dm.low, hi=dm.high, topInd=topInd, bottomInd=bottomInd)
-                                if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
-                                    assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
-                                    ref.type[[j]] <- elim
-                                    ref.dir[[j]] <- "lower"
-                                    ref.parent[[j]] <- peak1.id
+                                if((massShiftList1[[elim]][[1]]$type=="frag1") || (peak1.id < peak2.id)){
+                                    if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
+                                        assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
+                                        ref.type[[j]] <- elim
+                                        ref.dir[[j]] <- "lower"
+                                        ref.parent[[j]] <- peak1.id
+                                    }
                                 }
                             }
                         }
@@ -111,20 +115,24 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, idColName, massShiftL
                         dm.high <- massShiftList2[[elim]][[1]][["max"]]
 
                         if(massShiftList2[[elim]][[2]] == "+"){
-                            if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
-                                assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
-                                ref.type[[j]] <- elim
-                                ref.dir[[j]] <- "higher"
-                                ref.parent[[j]] <- peak1.id
+                            if((massShiftList2[[elim]][[1]]$type=="frag1") || (peak1.id < peak2.id)){
+                                if((peak2.mz >= (peak1.mz + dm.low)) && (peak2.mz <= (peak1.mz + dm.high)) ){
+                                    assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
+                                    ref.type[[j]] <- elim
+                                    ref.dir[[j]] <- "higher"
+                                    ref.parent[[j]] <- peak1.id
+                                }
                             }
                         }
                         if(massShiftList2[[elim]][[2]] == "-"){
                             wtf2 <<- list(p1=peak1, p2=peak2, lo=dm.low, hi=dm.high, topInd=topInd, bottomInd=bottomInd)
-                            if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
-                                assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
-                                ref.type[[j]] <- elim
-                                ref.dir[[j]] <- "lower"
-                                ref.parent[[j]] <- peak1.id
+                            if((massShiftList2[[elim]][[1]]$type=="frag1") || (peak1.id < peak2.id)){
+                                if((peak2.mz <= (peak1.mz - dm.low)) && (peak2.mz >= (peak1.mz - dm.high)) ){
+                                    assign("testCount1", (get("testCount1",envir=countEnv)+1), envir=countEnv)
+                                    ref.type[[j]] <- elim
+                                    ref.dir[[j]] <- "lower"
+                                    ref.parent[[j]] <- peak1.id
+                                }
                             }
                         }
                     }
