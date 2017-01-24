@@ -149,6 +149,10 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, idColName, massShiftL
 }
     
 
+# filter_fragLowerIntensity is the same as filter, but 
+# is more restrictive in the sense that the fragment peaks
+# must have lower intensity (so higher frame number) than
+# their respective parent peaks.
 filter_fragLowerIntensity <- function(peakFrameIn_in, mzColName, timeColName, idColName, massShiftList1=to.elim.1, massShiftList2=to.elim.2, max.rt.drift=max.rt.drift_in){
 
     # Sort the frames by retention time
