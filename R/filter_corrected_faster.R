@@ -144,8 +144,8 @@ filter <- function(peakFrameIn_in, mzColName, timeColName, idColName, massShiftL
                 ref.dir=ref.dir,
                 ref.type=ref.type,
                 ref.parent=ref.parent,
-                keep=which(ref.type==""),
-                discard=which(ref.type!="")))
+                keep=peakFrameIn$id[which(ref.type=="")],
+                discard=peakFrameIn$id[which(ref.type!="")]))
 }
     
 
