@@ -247,7 +247,7 @@ alter_cols <- function(d, col_finder, alterFunc){
 #' @param id_cols numeric indices of columns containing row id information
 #' @param id_col_name If we don't supply a name_cols function, what do we want to call the auto-generated id column? 
 #' @param name_cols unary function that takes the sub-matrix of (formerly row, after transpose column) information, and creates a vector
-#'        to be used for sample names out of it.
+#'        to be used for sample names out of it. Note that this function must also append to the front the name of the id column
 #' @return transposed data frame, with the sample_ids in the first colmns (used to be original data frame names), and the frame/variable
 #'         id information in the names(...) attribute.
 #' @export
