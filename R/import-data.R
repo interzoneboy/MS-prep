@@ -255,9 +255,10 @@ transpose <- function(d, id_cols, id_col_name, name_cols=NULL ){
     d_trans <- data.frame(t(d[,(length(id_cols)+1):ncol(d)]), stringsAsFactors=F)
     d_trans <- data.frame(id=row.names(d_trans), d_trans, stringsAsFactors=F)
     d_nameThings <- data.frame(t(d[,1:(length(id_cols))]), stringsAsFactors=F)
+    d_nameThings_orig <- data.frame(d[,1:(length(id_cols))], stringsAsFactors=F)
     d_out <- d_trans
     if (!is.null(name_cols)){
-        names(d_out) <- name_cols(d_nameThings)
+        names(d_out) <- name_cols(d_nameThings_orig)
     }else{
         names(d_out) <- c(id_col_name, paste0("frame_", stringr::str_trim(d_nameThings[1,1:length(d_nameThings)])))
     }
