@@ -184,14 +184,21 @@ keep_rows <- function(d, funcList){
 #' @export
 generate_col <- function(d, col_name, new_col_name, splitFunc){
     d.out <- d
+
     col.index <- grep( paste0("^",col_name,"$"), names(d.out))
-    d.out.1 <- d.out[,1:col.index]
+    print(paste0("colIndex: ", col.index))
+    
+    d.out.1 <- d.out[,1:col.index, drop=FALSE]
+    wtf1 <<- d.out.1
+
     if(col.index >= ncol(d.out)){
         d.out.2 <- NULL
     }else{
-        d.out.2 <- d.out[,(col.index+1):ncol(d.out)]
+        d.out.2 <- d.out[,(col.index+1):ncol(d.out), drop=FALSE]
     }
+    wtf2 <<- d.out.2
     d.out.1[[new_col_name]] <- splitFunc(d[[col_name]])
+    wtf1.nu <<- d.out.1
 
     if(is.null(d.out.2)){
         return(d.out.1)
