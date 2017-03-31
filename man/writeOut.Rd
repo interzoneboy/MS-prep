@@ -17,4 +17,3 @@ This returns the data frame for further chaining with magrittr
 \description{
 writeOut writes dataframe dd out to a csv file named n.
 }
-

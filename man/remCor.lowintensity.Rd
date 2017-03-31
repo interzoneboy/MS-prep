@@ -20,4 +20,3 @@ a vector of column indices to keep.
 Filter the columns of data frame d such that the less median-intense (or other user
 specifiable column, correlated at a value higher than cutoff, is removed.
 }
-

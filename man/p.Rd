@@ -13,4 +13,3 @@ P is the pipelining function of this module. It decorates functions such that th
 becomes the data frame in the pipeline.
 Intended for use with magrittr %>% pipelines.
 }
-

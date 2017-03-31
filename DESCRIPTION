@@ -11,6 +11,6 @@ Description: This module implements basic parsing of sieve MS and MS/MS data,
     pipelines.
 Maintainer: matt s <mattt@gmail.com>
 License: GPL (>= 2)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Imports:
     stringr

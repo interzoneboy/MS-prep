@@ -28,4 +28,3 @@ returns the input data frame, but with the data cols normalized.
 \description{
 col_norm_to_sum normalizes all the frame-columns by the sum of a number of them..
 }
-

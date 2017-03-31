@@ -18,4 +18,3 @@ The input data frame \code{d} but containing only the rows we want to keep
 Function keeps only the specified rows from input data frame d, returning a new
 data frame containing only these rows.
 }
-

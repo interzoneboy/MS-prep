@@ -19,4 +19,3 @@ The input data frame \code{d} but missing the unwanted rows
 \description{
 Function removes rows from input data frame d, returning a data frame without them
 }
-

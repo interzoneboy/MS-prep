@@ -27,4 +27,3 @@ we consider everything within a +/- mass_acc window from the target value.}
 \description{
 massShift_filter removes peaks that correspond to specific mass shifts.
 }
-

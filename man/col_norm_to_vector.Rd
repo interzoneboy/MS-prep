@@ -33,4 +33,3 @@ col_norm_to_vector normalized all the frame-columns by a supplied vector, same l
 Pre-compute some other vector by which to normalize (like from a different but identically dimensioned matrix),
 and use it to normalize the columns  of the input matrix dd.
 }
-

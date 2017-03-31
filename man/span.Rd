@@ -23,4 +23,3 @@ Function that describes a range in a given data frame context. Intended for use 
 pipeline, where there's no explicit data frame to measure, like for the inds argument of
 remove_cols and remove_rows.
 }
-

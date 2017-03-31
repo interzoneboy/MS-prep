@@ -21,4 +21,3 @@ A copy of the input data frame d with the given column altered.
 Function that uniformly applies a change to a column. Intended to do things like 
 converting character columns to numeric ones.
 }
-

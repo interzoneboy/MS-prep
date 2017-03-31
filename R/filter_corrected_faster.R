@@ -300,6 +300,20 @@ test_sleepKAB <- function(){
 
 }
 
+run_vasant_test <- function(){
+    # 2017-02-28, this is to test how long it takes to defrag/isotope this one file that
+    # seems to be taking a long time on Vasant's computer.
+    d <- read.csv("/home/matt/DataForRose_2/170214_SleepNASA-NegIon-Rerun_AllSamples_1.csv", header=T, stringsAsFactors=F)
+    d2 <- d[,1:3]
+    names(d2) <- c("id","mz","rt")
+    d2$mz <- as.numeric(d2$mz)
+    d2$rt <- as.numeric(d2$rt)
+    t1 <- Sys.time()
+    ret <- filter_fragLowerIntensity(d2, "mz", "rt", "id")
+    t2 <- Sys.time()
+    return(list(t1=t1, t2=t2, ret=ret))
+
+}
 
 
 

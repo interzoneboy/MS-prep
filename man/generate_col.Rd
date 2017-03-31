@@ -27,4 +27,3 @@ Function that somehow generates a new column called "new_col_name" from the old 
 is intended to do things like split sample names from the default values that are multipart and
 full of "_"s.
 }
-

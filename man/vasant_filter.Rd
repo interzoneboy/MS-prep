@@ -19,4 +19,3 @@ Copy of data frame d, but missing the columns (optionally specified by inds) tha
 \description{
 vasant_filter runs Vasant's vectorized correlation filter on data frame d.
 }
-

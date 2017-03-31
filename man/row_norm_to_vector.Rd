@@ -30,4 +30,3 @@ returns the input data frame, but with the specified data rows normalized by the
 Pre-compute some other vector by which to normalize (like from a different by identically-dimensioned
 matrix), and use it to normalize the rows of the input matrix.
 }
-

@@ -19,4 +19,3 @@ a data frame, with something sensical in names(...)
 Function reads in a csv file, and prepares it so that it has a proper header line
 (1st line), and a consistent body afterwards, with no trailing empty rows or columns.
 }
-

@@ -28,4 +28,3 @@ returns the input data frame, but with the data cols normalized.
 Set this to the first frame to normalize by the most intense frame, or set this to
 the internal standard frame.
 }
-

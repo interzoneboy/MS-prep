@@ -22,4 +22,3 @@ returns the input data frame, exactly the way it was.
 norm_null doesn't do any normalizing, but represents. Use this if you need a default normalizing arg
 that does nothing.
 }
-

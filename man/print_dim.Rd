@@ -17,4 +17,3 @@ Prints to the screen... returns the data frame d for further pipelining.
 \description{
 print_dim simply prints the dim of input matrix d using "print"
 }
-

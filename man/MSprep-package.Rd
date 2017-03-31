@@ -55,4 +55,7 @@ example_prepare_data <- function(fname){
 
 }
 }
+\author{
+\strong{Maintainer}: matt s \email{mattthew@gmail.com}
 
+}

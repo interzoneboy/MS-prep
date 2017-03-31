@@ -24,4 +24,3 @@ returns the input data frame, but with the specified data normalized.
 \description{
 row_norm_to_sum normalizes all the frame-rows by the sum of a number of them..
 }
-

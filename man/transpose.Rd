@@ -29,4 +29,3 @@ which contain row measurement information, so that it can put together the trans
 The "names" of the data frame become the row.names after the transpose. This is made into an additional column
 called sample_id.
 }
-
