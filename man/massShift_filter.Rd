@@ -5,7 +5,8 @@
 \title{massShift_filter removes peaks that correspond to specific mass shifts.}
 \usage{
 massShift_filter(d, mzColName = "MZ", timeColName = "Time",
-  shiftList1 = to.elim.1, shiftList2 = to.elim.2, rt_window_width = 0.05)
+  shiftList1 = to.elim.1, shiftList2 = to.elim.2,
+  rt_window_width = 0.05)
 }
 \arguments{
 \item{mzColName}{This is the name of the MZ column in the sieve data to be filtered.}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize_rows.R
 \name{row_norm_to_vector}
 \alias{row_norm_to_vector}
-\title{row_norm_to_vector normalizes all the frame-rows by a supplied vector, same length as rows.}
+\title{row_norm_to_vector normalizes all the frame-rows by a supplied vector}
 \usage{
 row_norm_to_vector(dd, normVector, rowInds = NULL, colInds = NULL)
 }
@@ -10,23 +10,23 @@ row_norm_to_vector(dd, normVector, rowInds = NULL, colInds = NULL)
 \item{dd}{input data frame to normalize}
 
 \item{normVector}{This is a vector that will properly normalize the rows of this data frame, BEFORE
-any non-processed columns are removed from it. (i.e. it has to have exactly the same dimension as
-the pre-processed data frame it's going to normalize.)}
+any non-processed rows are removed from it. (i.e. it has to have exactly the same dimension as
+the pre-processed data frame it's going to normalize. The length of the columns (dim(...)[[1]]))}
 
-\item{rowInds}{A span of rows over which to operate. These should be the data rows, and this is
+\item{rowInds}{A span of row indices over which to operate. These should be the data rows, and this is
 just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 
-\item{colInds}{A span of columns over which to operate,
-just so that you can have other ignored columns be in there (time, mz, etc). This can be NULL, in which case all cols
+\item{colInds}{A span of column indices over which to operate. These should be the data columns, and this is
+just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 }
 \value{
-returns the input data frame, but with the specified data rows normalized by the input row vector.
+return the input data frame, but with the specified data rows normalized by the input column vector.
 }
 \description{
-Pre-compute some other vector by which to normalize (like from a different by identically-dimensioned
-matrix), and use it to normalize the rows of the input matrix.
+Pre-compute some other vector by which to normalize (like from a different but identically dimensioned matrix),
+and use it to normalize the rows  of the input matrix dd.
 }

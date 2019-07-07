@@ -4,27 +4,27 @@
 \alias{row_norm_to_frame}
 \title{row_norm_to_frame normalizes all the frame-rows by one of them.}
 \usage{
-row_norm_to_frame(dd, normRow, rowInds = NULL, colInds = NULL)
+row_norm_to_frame(dd, normCol, rowInds = NULL, colInds = NULL)
 }
 \arguments{
 \item{dd}{input data frame to normalize}
 
-\item{normRow}{numeric row index indicating the row of the frame we normalize to.}
+\item{normCol}{either a string column name, or a numeric column index}
 
-\item{rowInds}{A span of rows over which to operate. These should be the data rows, and this is
+\item{rowInds}{A span of row indices over which to operate. These should be the data rows, and this is
 just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 
-\item{colInds}{A span of columns over which to operate,
-just so that you can have other ignored columns be in there (time, mz, etc). This can be NULL, in which case all cols
+\item{colInds}{A span of column indices over which to operate. These should be the data columns, and this is
+just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 }
 \value{
-returns the input data frame, but with the specified data rows normalized.
+returns the input data frame, but with the data cols normalized.
 }
 \description{
 Set this to the first frame to normalize by the most intense frame, or set this to
-the internal standard frame.
+the internal standard frame, in cases where the frames are in columns.
 }

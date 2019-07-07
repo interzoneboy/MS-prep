@@ -2,9 +2,7 @@
 % Please edit documentation in R/normalize_cols.R
 \name{col_norm_to_vector}
 \alias{col_norm_to_vector}
-\title{col_norm_to_vector normalized all the frame-columns by a supplied vector, same length as columns.
-Pre-compute some other vector by which to normalize (like from a different but identically dimensioned matrix),
-and use it to normalize the columns  of the input matrix dd.}
+\title{col_norm_to_vector normalizes all the frame-columns by a supplied vector, same length as rows.}
 \usage{
 col_norm_to_vector(dd, normVector, rowInds = NULL, colInds = NULL)
 }
@@ -12,24 +10,23 @@ col_norm_to_vector(dd, normVector, rowInds = NULL, colInds = NULL)
 \item{dd}{input data frame to normalize}
 
 \item{normVector}{This is a vector that will properly normalize the columns of this data frame, BEFORE
-any non-processed rows are removed from it. (i.e. it has to have exactly the same dimension as
-the pre-processed data frame it's going to normalize.)}
+any non-processed columns are removed from it. (i.e. it has to have exactly the same dimension as
+the pre-processed data frame it's going to normalize.). nounaetouh}
 
-\item{rowInds}{A span of row indices over which to operate. These should be the data rows, and this is
+\item{rowInds}{A span of rows over which to operate. These should be the data rows, and this is
 just so that you can have other ignored rows be in there. This can be NULL, in which case all rows
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 
-\item{colInds}{A span of column indices over which to operate. These should be the data columns, and this is
-just so that you can have other ignored columns be in there. This can be NULL, in which case all columns
+\item{colInds}{A span of columns over which to operate,
+just so that you can have other ignored columns be in there (time, mz, etc). This can be NULL, in which case all cols
   are normalized, or it can be a vector of integer indices, or it can be a function that gets called with dd
   and which returns a vector of ints (see function 'span' in this package)}
 }
 \value{
-return the input data frame, but with the specified data columns normalized by the input column vector.
+returns the input data frame, but with the specified data columns normalized by the input row vector.
 }
 \description{
-col_norm_to_vector normalized all the frame-columns by a supplied vector, same length as columns.
-Pre-compute some other vector by which to normalize (like from a different but identically dimensioned matrix),
-and use it to normalize the columns  of the input matrix dd.
+Pre-compute some other vector by which to normalize (like from a different by identically-dimensioned
+matrix), and use it to normalize the columns of the input matrix.
 }

@@ -4,12 +4,12 @@
 \alias{col_norm_null}
 \title{col_norm_null}
 \usage{
-col_norm_null(dd, normCols, rowInds = NULL, colInds = NULL)
+col_norm_null(dd, normRows, rowInds = NULL, colInds = NULL)
 }
 \arguments{
 \item{dd}{input data frame}
 
-\item{normCols}{dummy variable for column to normalize with. This whole function does nothing.}
+\item{normRows}{dummy variable for column to normalize with. This whole function does nothing.}
 
 \item{rowInds}{dummy variable}
 
@@ -19,6 +19,6 @@ col_norm_null(dd, normCols, rowInds = NULL, colInds = NULL)
 returns the input data frame, exactly the way it was.
 }
 \description{
-col_norm_null doesn't do any normalizing, but represents. Use this if you need a default normalizing arg
+norm_null doesn't do any normalizing, but represents. Use this if you need a default normalizing arg
 that does nothing.
 }

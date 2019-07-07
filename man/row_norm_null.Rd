@@ -19,6 +19,6 @@ row_norm_null(dd, normCols, rowInds = NULL, colInds = NULL)
 returns the input data frame, exactly the way it was.
 }
 \description{
-norm_null doesn't do any normalizing, but represents. Use this if you need a default normalizing arg
+row_norm_null doesn't do any normalizing, but represents. Use this if you need a default normalizing arg
 that does nothing.
 }

@@ -8,9 +8,11 @@
 MS and MS/MS data. See the function example() for a demostration of
 its capabilities.}
 \description{
-This module implements parsing and data frame construction for sieve
-MS and MS/MS data. See the function example() for a demostration of
-its capabilities.
+This module implements basic parsing of sieve MS and MS/MS data,
+    into a logically constructed R data frame, suitable for further processing.
+    Also a case study of how to explicitly pipeline analysis and data
+    processing, using functions, decorators, and magrittr n'est pas une
+    pipelines.
 }
 \examples{
 EXAMPLE of how to use this package
