@@ -102,6 +102,7 @@ col_norm_to_frame <- function(dd, normCol, rowInds=NULL, colInds=NULL){
     return(dd_out)
 }
 
+
 #' col_norm_to_median normalizes all the frame-columns by the median of a number of them..
 #'
 #' @param dd input data frame to normalize
@@ -119,6 +120,7 @@ col_norm_to_frame <- function(dd, normCol, rowInds=NULL, colInds=NULL){
 #' @export
 col_norm_to_median <- function(dd, normCols, rowInds=NULL, colInds=NULL){
 
+
     if(is.null(normCols)){
         norm_stat_pre <- dd
     }else if(is.function(normCols)){
@@ -126,7 +128,7 @@ col_norm_to_median <- function(dd, normCols, rowInds=NULL, colInds=NULL){
     }else{
         norm_stat_pre <- dd[,normCols]
     }
-    norm_stat <- as.vector(apply(norm_stat_pre,1,function(x){median(x, na.rm=T)}))
+    norm_stat <- as.vector(apply(norm_stat_pre,1,function(x){median(as.numeric(x), na.rm=T)}))
 
     if(is.null(colInds)){
         all_col_inds <- 1:ncol(dd)
@@ -138,6 +140,7 @@ col_norm_to_median <- function(dd, normCols, rowInds=NULL, colInds=NULL){
         all_col_inds <- colInds
         data_mat <- dd[,all_col_inds]
     }
+
 
     if(is.null(rowInds)){
         all_row_inds <- 1:nrow(dd)
@@ -185,7 +188,7 @@ col_norm_to_sum <- function(dd, normCols, rowInds=NULL, colInds=NULL){
     }else{
         norm_stat_pre <- dd[,normCols]
     }
-    norm_stat <- as.vector(apply(norm_stat_pre,1,function(x){sum(x, na.rm=T)}))
+    norm_stat <- as.vector(apply(norm_stat_pre,1,function(x){sum(as.numeric(x), na.rm=T)}))
 
     if(is.null(colInds)){
         all_col_inds <- 1:ncol(dd)

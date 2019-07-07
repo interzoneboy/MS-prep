@@ -131,7 +131,7 @@ row_norm_to_median <- function(dd, normRows, rowInds=NULL, colInds=NULL){
     }else{
         norm_stat_pre <- dd[normRows,]
     }
-    norm_stat <- as.vector(apply(norm_stat_pre,2,function(x){median(x, na.rm=T)}))
+    norm_stat <- as.vector(apply(norm_stat_pre,2,function(x){median(as.numeric(x), na.rm=T)}))
 
     if(is.null(rowInds)){
         all_row_inds <- 1:nrow(dd)
@@ -143,6 +143,7 @@ row_norm_to_median <- function(dd, normRows, rowInds=NULL, colInds=NULL){
         all_row_inds <- inds
         data_mat <- dd[all_row_inds,]
     }
+
 
     if(is.null(colInds)){
         all_col_inds <- 1:ncol(dd)
@@ -157,6 +158,7 @@ row_norm_to_median <- function(dd, normRows, rowInds=NULL, colInds=NULL){
         data_mat_2 <- data_mat[,all_col_inds]
         norm_stat_2 <- norm_stat[all_col_inds]
     }
+
 
     normed_mat <- sweep(data_mat_2, 2, norm_stat_2, FUN="/")
     dd_out <- dd
@@ -184,7 +186,7 @@ row_norm_to_sum <- function(dd, normRows, rowInds=NULL, colInds=NULL){
     }else{
         norm_stat_pre <- dd[normRows,]
     }
-    norm_stat <- as.vector(apply(norm_stat_pre,2,function(x){sum(x, na.rm=T)}))
+    norm_stat <- as.vector(apply(norm_stat_pre,2,function(x){sum(as.numeric(x), na.rm=T)}))
 
     if(is.null(rowInds)){
         all_row_inds <- 1:nrow(dd)
