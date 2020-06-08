@@ -4,12 +4,12 @@
 \alias{p}
 \title{P is the pipelining function of this module. It decorates functions such that their only argument
 becomes the data frame in the pipeline.
-Intended for use with magrittr %>% pipelines.}
+Intended for use with magrittr pipelines.}
 \usage{
 p(f)
 }
 \description{
 P is the pipelining function of this module. It decorates functions such that their only argument
 becomes the data frame in the pipeline.
-Intended for use with magrittr %>% pipelines.
+Intended for use with magrittr pipelines.
 }
